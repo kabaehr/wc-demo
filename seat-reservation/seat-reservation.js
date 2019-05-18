@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit-element';
+import { PricingService } from './pricing-service.js';
 
 class SeatReservation extends LitElement {
 	static get properties() {
@@ -47,7 +48,7 @@ class SeatReservation extends LitElement {
 				}
 
 				.buy-button {
-					width: 100px;
+					min-width: 100px;
 					height: 40px;
 					background-color: #4c82ff;
 					color: white;
@@ -70,11 +71,12 @@ class SeatReservation extends LitElement {
 					display: flex;
 					justify-content: flex-end;
 					line-height: 40px;
+					border-radius: 25px 25px 25px 25px;
 				}
 
 				ul {
 					list-style-type: square;
-    				padding-inline-start: 20px;
+					padding-inline-start: 20px;
 				}
 
 				li {
@@ -99,6 +101,7 @@ class SeatReservation extends LitElement {
 
 	constructor() {
 		super();
+		this.pricingService = new PricingService();
 		this.selectedSeats = [];
 
 		this.addEventListener('seat-selected', e => {
@@ -117,12 +120,7 @@ class SeatReservation extends LitElement {
 		this.requestUpdate();
 	}
 
-	calculatePriceSummary() {
-		const reducer = (priceSummary, currentSeat) => priceSummary + currentSeat.price;
-		return this.selectedSeats.reduce(reducer, 0);
-	}
-
-	reserveSeats(e) {
+	reserveSeats() {
 		var event = new CustomEvent('reserve-seats', {
 			detail: {
 				seats: this.selectedSeats
@@ -131,6 +129,13 @@ class SeatReservation extends LitElement {
 			composed: true
 		});
 		this.dispatchEvent(event);
+		this.selectedSeats.splice(0, this.selectedSeats.length);
+
+		for (const child of Array.from(this.children)) {
+			child.isSelected = false;
+		}
+
+		this.requestUpdate();
 	}
 
 	render() {
@@ -138,6 +143,7 @@ class SeatReservation extends LitElement {
 			<div class="cinema-canvas">
 				Leinwand
 			</div>
+
 			<slot></slot>
 			<div class="seat-choice ${this.selectedSeats.length < 1 ? 'hide' : ''}">
 				<b class="title">Ausgewählte Plätze</b>
@@ -155,8 +161,10 @@ class SeatReservation extends LitElement {
 					)}
 				</ul>
 				<div class="order-summary">
-					<span class="total-price"><b>Gesamtpreis:</b> ${this.calculatePriceSummary()} €</span>
-					<button class="buy-button" @click=${this.reserveSeats}>Kaufen</button>
+					<span class="total-price">
+						<b>Gesamtpreis:</b> ${this.pricingService.calculatePriceSummary(this.selectedSeats)} €
+					</span>
+					<button class="buy-button" @click=${this.reserveSeats}>Reservieren</button>
 				</div>
 			</div>
 		`;

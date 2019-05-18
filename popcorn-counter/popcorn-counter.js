@@ -20,16 +20,14 @@ class PopcornCounter extends HTMLElement {
 		this.popcornCounter = 0;
 		this.shadow = this.attachShadow({ mode: 'open' });
 		this.shadow.appendChild(template.content.cloneNode(true));
-
 	}
 
 	//will be called when the element gets attached to the DOM
 	connectedCallback() {
-		
 		const add = this.shadowRoot.querySelectorAll('.add-popcorn')[0];
 		const countElement = this.shadowRoot.querySelectorAll('.count')[0];
 		countElement.innerHTML = this.popcornCounter;
-		add.addEventListener('click', (event) => {
+		add.addEventListener('click', event => {
 			this.popcornCounter++;
 			countElement.innerHTML = this.popcornCounter;
 		});

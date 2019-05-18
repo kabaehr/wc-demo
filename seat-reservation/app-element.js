@@ -12,7 +12,6 @@ class AppElement extends LitElement {
 	}
 
 	handleReserveEvent(e) {
-        console.log('bubbled up');
 		this.reservationService.setReservations(e.detail.seats);
 		this.seats = this.reservationService.getSeats();
 		this.requestUpdate();
@@ -20,11 +19,11 @@ class AppElement extends LitElement {
 
 	render() {
 		return html`
-            <seat-reservation>
+            <seat-reservation @reserve-seats=${this.handleReserveEvent}>
 			${this.seats.map(
 				seat =>
 					html`
-						<seat-element .seat=${seat} @reserve-seats="${this.handleReserveEvent}"></seat-element>
+						<seat-element .seat=${seat}></seat-element>
 					`
 				)}
             

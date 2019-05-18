@@ -1,7 +1,8 @@
-export class ReservationService {
+export class PricingService {
 
-    calculateSeatPrice(row, price) {
-        return 42;
+    calculatePriceSummary(allSelectedSeats) {
+        const reducer = (priceSummary, currentSeat) => priceSummary + currentSeat.price;
+        return allSelectedSeats.reduce(reducer, 0);
     }
 
 }
