@@ -12,7 +12,7 @@ template.innerHTML = `
 	<div class="counter-text">Coffee count:
 		<span class="count"></span>
 	</div>
-	<img class="add-coffee" src="coffee.png" alt="picture of a coffee mug">
+	<img class="add-coffee" src="img_coffee.png" alt="picture of a coffee mug">
 `;
 
 class CoffeeCounter extends HTMLElement {

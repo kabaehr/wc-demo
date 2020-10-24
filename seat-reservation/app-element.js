@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit-element';
-import { ReservationService } from './reservation-service.js';
-import './seat-reservation.js';
-import './seat-element.js';
+import { ReservationService } from './services/reservation-service.js';
+import './reservation-element/seat-reservation.js';
+import './reservation-element/seat-element.js';
 
 class AppElement extends LitElement {
 
@@ -26,7 +26,6 @@ class AppElement extends LitElement {
 						<seat-element .seat=${seat}></seat-element>
 					`
 				)}
-            
             </seat-reservation>
 		`;
 	}
